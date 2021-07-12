@@ -1,0 +1,13 @@
+﻿  main.cpp
+C:\Users\הראל\Desktop\harel\First\First\main.cpp(64,31): warning C4305:  'argument': truncation from 'double' to 'GLclampf'
+C:\Users\הראל\Desktop\harel\First\First\main.cpp(155,16): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\הראל\Desktop\harel\First\First\main.cpp(166,16): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\הראל\Desktop\harel\First\First\main.cpp(176,16): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\הראל\Desktop\harel\First\First\main.cpp(200,16): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\הראל\Desktop\harel\First\First\main.cpp(204,16): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\הראל\Desktop\harel\First\First\main.cpp(361,9): warning C4101:  'dist': unreferenced local variable
+C:\Users\הראל\Desktop\harel\First\First\main.cpp(568,16): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\הראל\Desktop\harel\First\First\main.cpp(635,15): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\הראל\Desktop\harel\First\First\main.cpp(786,17): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\הראל\Desktop\harel\First\First\main.cpp(897,15): warning C4018:  '<': signed/unsigned mismatch
+  First.vcxproj -> C:\Users\הראל\Desktop\harel\First\Debug\First.exe
