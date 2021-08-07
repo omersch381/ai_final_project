@@ -19,7 +19,7 @@ const int H = 800; // window height
 const int NUMOFEQUIPMENT = 5;
 
 const int NUM_ROOMS = 12;
-const int NUM_PLAYRES_IN_GROUP = 2;
+const int NUM_PLAYRES_IN_GROUP = 3;
 
 bool run_Astar = false;
 
@@ -523,12 +523,18 @@ void Astar(Player* startPlayer, Node* target)
 void killPlayer(vector<Player>& group, int index)
 {
 	Player p = group[index];
-	if (group.size() > 0)
+	if (index == SQUIRE_INT)
 	{
-		p.printStatusPlayer();
-		printf("\nplayer Dead");
-		maze[p.getNode()->GetLine()][p.getNode()->GetColumn()].SetValue(SPACE);
-		group.erase(group.begin() + index);
+		group.clear();
+	}else
+	{
+		if (group.size() > 0)
+		{
+			p.printStatusPlayer();
+			printf("\nplayer Dead");
+			maze[p.getNode()->GetLine()][p.getNode()->GetColumn()].SetValue(SPACE);
+			group.erase(group.begin() + index);
+		}
 	}
 }
 
@@ -596,7 +602,7 @@ void fightMode(Player *me,int enemyValue)
 {
 	Node* target;
 	Player* playerEnemy;
-	if (!canFire(me))
+	if (!canFire(me) && me->getIndex() != SQUIRE_INT)
 	{
 		me->setSecondState(FIGHT);
 		target = BfsIteration(me->getNode()->GetValue(), enemyValue, me, true);
