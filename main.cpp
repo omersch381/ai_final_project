@@ -523,18 +523,12 @@ void Astar(Player* startPlayer, Node* target)
 void killPlayer(vector<Player>& group, int index)
 {
 	Player p = group[index];
-	if (index == SQUIRE_INT)
+	if (group.size() > 0)
 	{
-		group.clear();
-	}else
-	{
-		if (group.size() > 0)
-		{
-			p.printStatusPlayer();
-			printf("\nplayer Dead");
-			maze[p.getNode()->GetLine()][p.getNode()->GetColumn()].SetValue(SPACE);
-			group.erase(group.begin() + index);
-		}
+		p.printStatusPlayer();
+		printf("\nplayer Dead");
+		maze[p.getNode()->GetLine()][p.getNode()->GetColumn()].SetValue(SPACE);
+		group.erase(group.begin() + index);
 	}
 }
 
