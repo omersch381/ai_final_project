@@ -19,7 +19,7 @@ const int H = 800; // window height
 const int NUMOFEQUIPMENT = 5;
 
 const int NUM_ROOMS = 12;
-const int NUM_PLAYRES_IN_GROUP = 2;
+const int NUM_PLAYRES_IN_GROUP = 3;
 
 bool run_Astar = false;
 
@@ -596,7 +596,7 @@ void fightMode(Player *me,int enemyValue)
 {
 	Node* target;
 	Player* playerEnemy;
-	if (!canFire(me))
+	if (!canFire(me) && me->getIndex() != SQUIRE_INT)
 	{
 		me->setSecondState(FIGHT);
 		target = BfsIteration(me->getNode()->GetValue(), enemyValue, me, true);

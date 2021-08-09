@@ -8,10 +8,11 @@ Player::Player(int index)
 	life = FULL_LIFE;
 	num_of_bullets = FULL_BULLETS;
 	num_of_granades = FULL_GRANADES;
-	behavior = rand()%2; // 0 - defence , 1- attack
+	behavior = (index == SQUIRE_INT) ? SQUIRE_INT : rand()%2; // 0 - defence , 1- attack
 	state = -1;
 	this->index = index;
 	secondState = FIGHT;
+	isSquire = (behavior == SQUIRE_INT) ? 1 : 0;
 }
 
 Player::Player()
@@ -23,6 +24,7 @@ Player::Player()
 	state = (behavior == 0) ? ESCAPE : FIGHT;
 	this->index = 0;
 	secondState = FIGHT;
+	isSquire = (behavior == SQUIRE_INT) ? 1 : 0;
 }
 
 Player::~Player()
@@ -85,6 +87,11 @@ void Player::hit_life(double dist, int MSZ)
 {
 	double hitPercent = 1 - (dist / MSZ);
 	this->life = this->life - (LIFE_HIT * hitPercent);
+}
+
+void Player::heal_life(double dist, int MSZ)
+{
+	this->life = this->life + LIFE_HIT;
 }
 
 void Player::reduceBullet()
@@ -153,7 +160,7 @@ void Player::decisionTree()
 		else 
 			setState(FIGHT);
 	}
-	else // attack behave
+	else if(getBehavior() == 1) // attack behave
 	{
 		if (life < 25)
 			setState(ESCAPE);
@@ -163,6 +170,17 @@ void Player::decisionTree()
 			setState(FILLING_WEAPON);
 		else
 			setState(FIGHT);
+	}
+	else // squire
+	{
+		if (life < 35)
+			setState(ESCAPE);
+		else if (life < 60)
+			setState(FILLING_HEALTH);
+		else if (numOfWeapon < (FULL_BULLETS + FULL_GRANADES) / 2)
+			setState(FILLING_WEAPON);
+		else 
+			setState(ESCAPE); // needs to be help or something
 	}
 }
 
