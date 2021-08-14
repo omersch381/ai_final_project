@@ -30,7 +30,9 @@ public:
 	void heal_life(double dist, int MSZ);
 	int get_num_of_bullets();
 	void add_num_of_bullets();
+	int increaseNumOfBullets(int amount);
 	int get_num_of_granade();
+	int increaseNumOfGranades(int amount);
 	void add_num_of_granades();
 	void setNode(Node* node);
 	Node* getNode();

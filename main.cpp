@@ -57,6 +57,7 @@ bool choosegGranade(Player* p, Player* enemy);
 void fireGranade(Bullet* bullet, vector<Player>& enemyGroup, int indexEnemy, int myValue);
 void AStarToWeapon(Player* me);
 int findMyRoom(Node* nodePlayer);
+Player* getSquire(vector<Player> group);
 
 void init()
 {
@@ -216,7 +217,6 @@ void resetAllGroups()
 
 	for (i = 0; i < group2.size(); i++)
 		maze[group2[i].getNode()->GetLine()][group2[i].getNode()->GetColumn()].SetValue(GROUP2);
-
 }
 
 void RestorePath(Node* first, int startValue, Player* player,bool isAstarBfs)
@@ -525,17 +525,77 @@ void killPlayer(vector<Player>& group, int index)
 	Player p = group[index];
 	if (group.size() > 0)
 	{
-		p.printStatusPlayer();
-		printf("\nplayer Dead");
+		printf("\nplayer Dead\n");
 		maze[p.getNode()->GetLine()][p.getNode()->GetColumn()].SetValue(SPACE);
 		group.erase(group.begin() + index);
 	}
 }
 
+Player* getSquire(vector<Player> group)
+{
+	for (auto it = group.begin(); it != group.end(); it++)
+		if ((it->getBehavior() != 0) && (it->getBehavior() != 1))
+			return &(*it);
+	return NULL;
+}
+
+bool isSquire(Player* p)
+{
+	return p->getBehavior() != 0 && p->getBehavior() != 1;
+}
+
+void absorbLifeFromSquire(Player* player, Player* squire, int groupNum)
+{
+	squire->setLife(squire->getLife() - 10);
+	player->setLife(player->getLife() + 10);
+	cout << "Player received 10 HP from squire in group #" << groupNum << endl;
+}
+
+void absorbGrenadeFromSquire(Player* player, Player* squire, int groupNum)
+{
+	squire->increaseNumOfGranades(-1);
+	player->increaseNumOfGranades(1);
+	cout << "Player received a grenade from squire in group #" << groupNum << endl;
+}
+
+void absorbBulletsFromSquire(Player* player, Player* squire, int groupNum)
+{
+	squire->increaseNumOfBullets(-5);
+	player->increaseNumOfBullets(5);
+	cout << "Player received 5 bullet from squire in group #" << groupNum << endl;
+}
+
+void checkIfSquireCanHelp(vector<Player>* group, Player* squire, int groupNum)
+{
+	for (auto it = (*group).begin(); it != (*group).end(); it++)
+		{
+			bool playerLifeUnder40 = (*it).getLife() < 40;
+			bool squireLifeOver20 = squire->getLife() > 20;
+			if (!isSquire(&*it) && playerLifeUnder40 && squireLifeOver20)
+				absorbLifeFromSquire(&*it, squire, groupNum);
+
+			bool playerGrenadesUnder1 = (*it).get_num_of_granade() < 1;
+			bool squireGrenadesOver1 = squire->get_num_of_granade() > 1;
+			if (!isSquire(&*it) && playerGrenadesUnder1 && squireGrenadesOver1)
+				absorbGrenadeFromSquire(&*it, squire, groupNum);
+
+			bool playerBulletsUnder5 = (*it).get_num_of_bullets() < 5;
+			bool squireBulletsOver5 = squire->get_num_of_bullets() > 5;
+			if (!isSquire(&*it) && playerBulletsUnder5 && squireBulletsOver5)
+				absorbBulletsFromSquire(&*it, squire, groupNum);
+		}
+}
+
 void startGame()
 {
 	if (group1.size() > 0)
+	{
 		chooseTarget(group1, GROUP1, GROUP2);
+
+		Player* squire = getSquire(group1);
+		if (squire != NULL)
+			checkIfSquireCanHelp(&group1, squire, 1);
+	}
 	else 
 	{
 		//Game Over
@@ -543,8 +603,14 @@ void startGame()
 		printf("\n\n-----------Game Over--------------\n");
 		return;
 	}
-	if (group2.size() >0)
+	if (group2.size() > 0)
+	{
 		chooseTarget(group2, GROUP2, GROUP1);
+
+		Player* squire = getSquire(group2);
+		if (squire != NULL)
+			checkIfSquireCanHelp(&group2, squire, 2);
+	}
 	else 
 		//Game Over
 		run_Astar = false;

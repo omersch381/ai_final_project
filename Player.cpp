@@ -63,8 +63,6 @@ void Player::setState(int state)
 	
 }
 
-
-
 int Player::getState()
 {
 	return this->state;
@@ -117,11 +115,22 @@ void Player::add_num_of_bullets()
 		this->num_of_bullets = FULL_BULLETS;
 }
 
+int Player::increaseNumOfBullets(int amount)
+{
+	if (this->num_of_bullets + amount < FULL_BULLETS)
+		this->num_of_bullets += amount;
+}
+
 int Player::get_num_of_granade()
 {
 	return this->num_of_granades;
 }
 
+int Player::increaseNumOfGranades(int amount)
+{
+	if (this->num_of_granades + amount < FULL_GRANADES)
+		this->num_of_granades += amount;
+}
 
 void Player::add_num_of_granades()
 {
@@ -230,11 +239,4 @@ void Player::printStatusPlayer()
 		behaveior = "attack";
 		break;
 	}
-
-	printf("\n\n-----\nplayer status:");
-	printf("\nplayer number %d, from team %d\n", this->getIndex(), this->getNode()->GetValue());
-	printf("behavior = %s, state = %s, second_state=%s \nlife = %d, bullets = %d, granades =%d",
-		behaveior, state1, state2, this->getLife(), this->get_num_of_bullets(),
-		this->get_num_of_granade());
-	printf("\n-----");
 }
